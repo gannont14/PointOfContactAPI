@@ -18,10 +18,21 @@ def products():
     ).fetchone()
 
     if products is None:
-        print("No")
         abort(404, "products don't exists")
 
-    for row in products:
-        print(row)
+    return products['name']
 
-    return products['body']
+
+@bp.route('/repos', methods=['GET'])
+def repos():
+    print("Found")
+    db = get_db()
+    repos = db.execute(
+        'SELECT * FROM repositories;'
+    ).fetchone()
+
+    if repos is None:
+        print("No")
+        abort(404, "repositories don't exists")
+
+    return repos['name']
