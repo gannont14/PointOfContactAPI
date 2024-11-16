@@ -16,13 +16,25 @@ def products():
     search_query = request.args.get('search_query', '')
     db = get_db()
     products = db.execute(
-        'SELECT name FROM products WHERE name LIKE ?',
-        ('%' + search_query + '%',)
+        'WITH q AS ('
+        'SELECT p.name, p.product_id '
+        'FROM products p '
+        'WHERE name LIKE ?'
+        '), w AS ('
+        'SELECT * '
+        'FROM contacts c '
+        'JOIN product_contacts pc ON c.contact_id = pc.contact_id'
+        ')'
+        'SELECT * '
+        'FROM q '
+        'JOIN w ON q.product_id = w.product_id '
+        'WHERE w.role = ?;',
+        ('%' + search_query + '%', 'Scrum Master',)
     ).fetchall()
 
     if products is None:
         abort(404, "products don't exists")
-    product_names = [product['name'] for product in products]
+    product_names = [product['email'] for product in products]
     return jsonify(product_names)
 
 
