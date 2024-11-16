@@ -1,10 +1,11 @@
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, url_for
+    Blueprint, flash, g, redirect, render_template, request, url_for, jsonify
 )
 from werkzeug.exceptions import abort
 
 from flaskr.auth import login_required
 from flaskr.db import get_db
+import json
 
 bp = Blueprint('poc', __name__, url_prefix="/contact")
 
@@ -12,15 +13,17 @@ bp = Blueprint('poc', __name__, url_prefix="/contact")
 @bp.route('/products', methods=['GET'])
 def products():
     print("Found")
+    search_query = request.args.get('search_query', '')
     db = get_db()
     products = db.execute(
-        'SELECT * FROM products;'
-    ).fetchone()
+        'SELECT name FROM products WHERE name LIKE ?',
+        ('%' + search_query + '%',)
+    ).fetchall()
 
     if products is None:
         abort(404, "products don't exists")
-
-    return products['name']
+    product_names = [product['name'] for product in products]
+    return jsonify(product_names)
 
 
 @bp.route('/repos', methods=['GET'])
