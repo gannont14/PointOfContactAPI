@@ -150,3 +150,26 @@ def all_contacts():
     print(len(result))
 
     return jsonify(result)
+
+
+@bp.route('/search/products', methods=['GET'])
+def search_products():
+    search_query = request.args.get('search_query', '')
+    db = get_db()
+    products = db.execute(
+        'SELECT DISTINCT name FROM products WHERE name LIKE ? LIMIT 10',
+        ('%' + search_query + '%',)
+    ).fetchall()
+    
+    return jsonify([product['name'] for product in products])
+
+@bp.route('/search/repos', methods=['GET'])
+def search_repos():
+    search_query = request.args.get('search_query', '')
+    db = get_db()
+    repos = db.execute(
+        'SELECT DISTINCT name FROM repositories WHERE name LIKE ? LIMIT 10',
+        ('%' + search_query + '%',)
+    ).fetchall()
+    
+    return jsonify([repo['name'] for repo in repos])
