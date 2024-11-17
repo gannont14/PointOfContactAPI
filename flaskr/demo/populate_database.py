@@ -3,10 +3,8 @@ import sqlite3
 import os
 import random
 
-# Initialize Faker
 fake = Faker()
 
-# Constants
 OFFICE_LOCATIONS = [
     'Ashville, SC', 'Lucerne, CH', 'Austin, TX', 'Berlin, DE', 
     'Toronto, CA', 'Chicago, IL', 'Bloomington, IN'
@@ -94,7 +92,7 @@ def create_product(db, product_num, contacts_by_role):
             ''', (product_id, contact_id))
 
 def main():
-    NUM_PRODUCTS = 500
+    NUM_PRODUCTS = 5000
     print(f"Starting database population with {NUM_PRODUCTS} products...")
     
     conn = connect_db()
