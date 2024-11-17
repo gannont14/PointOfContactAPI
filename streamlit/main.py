@@ -107,11 +107,12 @@ def render_product_item(item):
                     team_data = response.json()
                     if team_data:
                         # Create columns for better organization
-                        for team_member in team_data:
+                        
+                        for team_member in team_data[1:]:
                             st.markdown(
                                 f"""
                                 <div style="margin-bottom: 15px;">
-                                    <h5 style="margin: 0; padding: 0;">{team_member['first name']} {team_member['last name']}</h5>
+                                    <h4 style="margin: 0; padding: 0;">{team_member['first name']} {team_member['last name']}</h5>
                                     <small style="color: gray; font-size: 0.9em;">{team_member['role']}</small><br>
                                     <p style="margin: 5px 0;">
                                         <strong>Email:</strong> <a href="mailto:{team_member['email']}">{team_member['email']}</a><br>
@@ -155,11 +156,11 @@ def render_repo_item(item):
                     team_data = response.json()
                     if team_data:
                         # Create columns for better organization
-                        for team_member in team_data:
+                        for team_member in team_data[1:]:
                             st.markdown(
                                 f"""
                                 <div style="margin-bottom: 15px;">
-                                    <h5 style="margin: 0; padding: 0;">{team_member['first name']} {team_member['last name']}</h5>
+                                    <h4 style="margin: 0; padding: 0;">{team_member['first name']} {team_member['last name']}</h5>
                                     <small style="color: gray; font-size: 0.9em;">{team_member['role']}</small><br>
                                     <p style="margin: 5px 0;">
                                         <strong>Email:</strong> <a href="mailto:{team_member['email']}">{team_member['email']}</a><br>
