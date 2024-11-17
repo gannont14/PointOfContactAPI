@@ -27,12 +27,17 @@ python3 -m venv .venv
 
 Activate the virtual environment 
 ```python 
-source ./venv/bin/activate
+source ./.venv/bin/activate
 ```
 
 Install the requirements 
 ```python
 pip install -r requirements.txt
+```
+
+Set the Flask environment variable 
+```python
+export FLASK_APP=flaskr
 ```
 
 Run the flask app
@@ -50,7 +55,7 @@ While having the flask application running, create a new terminal instance,
 
 Activate the virtual environment in the repository again,
 ```python 
-source ./venv/bin/activate
+source ./.venv/bin/activate
 ```
 
 Run the example web app
