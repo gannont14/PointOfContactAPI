@@ -8,7 +8,7 @@
         - [Contact from Repository](#get-point-of-contact-from-repository-name)
         - [Contact from Product](#get-point-of-contact-from-product-name)
         - [Entire Team Contact](#get-entire-team-contact-information-from-product-name)
-    - [Optimization](#Optimization)
+        - [Optimization](#Optimization)
 
 
 
