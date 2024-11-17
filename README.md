@@ -22,7 +22,7 @@ Install the requirements
 
 ## Documentation
 
-### Get Point of Contact from repository name
+## Get Point of Contact from repository name
 ```rs
 GET /api/repos
 Parameters:
@@ -70,7 +70,7 @@ Parameters:
 ```
 
 
-### Get point of contact from product name
+## Get point of contact from product name
 ```rs
 GET /api/products
 Parameters:
@@ -113,7 +113,7 @@ Parameters:
 ]
 ```
 
-### Get entire team contact information from product name
+## Get entire team contact information from product name
 
 ```rs
 GET /api/products/all_contacts
@@ -134,9 +134,7 @@ Parameters:
     "location": "string",
     "role": "string"
   },
-    {
-        ...
-    }
+  \.\.\.
 ]
 ```
 
@@ -168,7 +166,5 @@ Parameters:
         "product name": "Fundamental optimizing paradigm",
         "role": "Product Owner"
     },
-    {
-        ...
-    }
+    \.\.\.
 ```
