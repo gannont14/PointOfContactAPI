@@ -1,13 +1,34 @@
 from flask import (
     Blueprint, request, jsonify
 )
-from werkzeug.exceptions import abort
-
-from flaskr.auth import login_required
+import heapq
+from fuzzywuzzy import fuzz
 from flaskr.db import get_db
-import json
+from typing import Dict, Any, List
 
 bp = Blueprint('poc', __name__, url_prefix="/contact")
+
+
+class fuzzyHeap:
+    def __init__(self):
+        self.heap = []
+        self.counter = 0
+
+    def push(self, item: Dict[str, Any], search_query):
+        ratio = -fuzz.ratio(search_query.lower(), item["repo name"].lower())
+        self.counter += 1
+        heapq.heappush(self.heap, (ratio, self.counter, item))
+
+    def pop(self) -> Dict[str, Any]:
+        if self.heap:
+            return heapq.heappop(self.heap)[2]
+        return None
+
+    def get_sorted_results(self) -> List[Dict[str, Any]]:
+        sorted_results = []
+        while self.heap:
+            sorted_results.append(self.pop())
+        return sorted_results
 
 
 @bp.route('/products', methods=['GET'])
@@ -40,6 +61,7 @@ def products():
 
     return jsonify(result)
 
+
 @bp.route('/repos', methods=['GET'])
 def repositories():
     print("Found")
@@ -67,8 +89,10 @@ def repositories():
     if not repos:
         return jsonify([])
 
-    result = [
-        {
+    repo_heap = fuzzyHeap()
+
+    for repo in repos:
+        repo_dict = {
             "repo name": repo["repository_name"],
             "repo url": repo["repository_url"],
             "product name": repo["product_name"],
@@ -77,9 +101,15 @@ def repositories():
             "email": repo["email"],
             "chat username": repo["chat_username"],
             "location": repo["location"],
-            "role": repo["role"]
-        }
-        for repo in repos
-    ]
-    
+            "role": repo["role"]}
+
+        ratio = fuzz.ratio(search_query.lower(), repo_dict["repo name"].lower())
+        print(f"Ratio: {ratio} for repo Name: {repo_dict['repo name']}")
+
+        min_ratio = 0.5
+        if ratio >= min_ratio:
+            repo_heap.push(repo_dict, search_query)
+
+    result = repo_heap.get_sorted_results()
+
     return jsonify(result)
