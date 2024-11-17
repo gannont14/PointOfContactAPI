@@ -80,8 +80,9 @@ def fetch_repo_data(repo_name):
     return None
 
 def render_product_item(item):
-    """Render a product contact item."""
+    """Render a product contact item with full team display."""
     with st.container(border=True):
+        # Render the main contact info
         st.markdown(
             f"""
             <h4 style="margin: 0; padding: 0;">{item['first name']} {item['last name']}</h4>
@@ -95,20 +96,37 @@ def render_product_item(item):
             """,
             unsafe_allow_html=True
         )
+        
+        # Add the team expander
         with st.expander("Show Full Team"):
-            st.markdown(
-                    f"""
-                    <h4 style="margin: 0; padding: 0;">{item['first name']} {item['last name']}</h4>
-                    <small style="color: gray; font-size: 0.9em;">{item['role']}</small><br>
-                    <p style="margin: 5px 0;">
-                        <strong>Email:</strong> <a href="mailto:{item['email']}">{item['email']}</a><br>
-                        <strong>Chat Username:</strong> {item['chat username']}<br>
-                        <strong>Location:</strong> {item['location']}<br>
-                        <strong>Product Name:</strong> {item['product name']}
-                    </p>
-                    """,
-                    unsafe_allow_html=True
-                )
+            # Fetch team data
+            url = f"{FLASK_BASE_URL}products/all_contacts"
+            try:
+                response = requests.get(url, params={'product_name': item['product name']})
+                if response.status_code == 200:
+                    team_data = response.json()
+                    if team_data:
+                        # Create columns for better organization
+                        for team_member in team_data:
+                            st.markdown(
+                                f"""
+                                <div style="margin-bottom: 15px;">
+                                    <h5 style="margin: 0; padding: 0;">{team_member['first name']} {team_member['last name']}</h5>
+                                    <small style="color: gray; font-size: 0.9em;">{team_member['role']}</small><br>
+                                    <p style="margin: 5px 0;">
+                                        <strong>Email:</strong> <a href="mailto:{team_member['email']}">{team_member['email']}</a><br>
+                                        <strong>Chat Username:</strong> {team_member['chat username']}<br>
+                                        <strong>Location:</strong> {team_member['location']}
+                                    </p>
+                                </div>
+                                """,
+                                unsafe_allow_html=True
+                            )
+                    else:
+                        st.write("No team members found.")
+            except requests.exceptions.RequestException as e:
+                st.error(f"Failed to fetch team data: {str(e)}")
+                
 def render_repo_item(item):
     """Render a repository contact item."""
     with st.container(border=True):
@@ -126,6 +144,36 @@ def render_repo_item(item):
             """,
             unsafe_allow_html=True
         )
+        
+      # Add the team expander
+        with st.expander("Show Full Team"):
+            # Fetch team data
+            url = f"{FLASK_BASE_URL}products/all_contacts"
+            try:
+                response = requests.get(url, params={'product_name': item['product name']})
+                if response.status_code == 200:
+                    team_data = response.json()
+                    if team_data:
+                        # Create columns for better organization
+                        for team_member in team_data:
+                            st.markdown(
+                                f"""
+                                <div style="margin-bottom: 15px;">
+                                    <h5 style="margin: 0; padding: 0;">{team_member['first name']} {team_member['last name']}</h5>
+                                    <small style="color: gray; font-size: 0.9em;">{team_member['role']}</small><br>
+                                    <p style="margin: 5px 0;">
+                                        <strong>Email:</strong> <a href="mailto:{team_member['email']}">{team_member['email']}</a><br>
+                                        <strong>Chat Username:</strong> {team_member['chat username']}<br>
+                                        <strong>Location:</strong> {team_member['location']}
+                                    </p>
+                                </div>
+                                """,
+                                unsafe_allow_html=True
+                            )
+                    else:
+                        st.write("No team members found.")
+            except requests.exceptions.RequestException as e:
+                st.error(f"Failed to fetch team data: {str(e)}")
 
 search_type = st.radio(
     "Select search type:",
