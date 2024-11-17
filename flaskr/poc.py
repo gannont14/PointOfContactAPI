@@ -6,7 +6,7 @@ from fuzzywuzzy import fuzz
 from flaskr.db import get_db
 from typing import Dict, Any, List
 
-bp = Blueprint('poc', __name__, url_prefix="/contact")
+bp = Blueprint('poc', __name__, url_prefix="/api")
 
 
 class fuzzyHeap:
