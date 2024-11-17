@@ -6,6 +6,7 @@ FLASK_BASE_URL = 'http://127.0.0.1:5000/api/'
 
 st.set_page_config(
     page_title="Point of Contact",
+    page_icon=":material/database:",
 )
 
 st.markdown(

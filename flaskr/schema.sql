@@ -56,3 +56,16 @@ CREATE TABLE product_contacts (
   FOREIGN KEY(contact_id) REFERENCES contacts(contact_id)
 );
 
+CREATE INDEX idx_products_name  ON products(name);
+
+CREATE INDEX idx_contacts_role  ON contacts(role);
+
+CREATE INDEX idx_product_contacts_product_id ON product_contacts(product_id);
+
+CREATE INDEX idx_product_contacts_contact_id ON product_contacts(contact_id);
+
+CREATE INDEX idx_repositories_name ON repositories(name);
+
+CREATE INDEX idx_repositories_product_id ON repositories(product_id);
+
+CREATE INDEX idx_product_contacts_composite ON product_contacts(product_id, contact_id);
