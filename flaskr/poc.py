@@ -22,11 +22,14 @@ def products():
         ('%' + search_query + '%', 'Scrum Master',)
     ).fetchall()
 
+    if not products:
+        return jsonify([])
+
     result = [
         {
             "product name": product["name"],
-            "first_name": product["first_name"],
-            "last_name": product["last_name"],
+            "first name": product["first_name"],
+            "last name": product["last_name"],
             "email": product["email"],
             "chat username": product["chat_username"],
             "location": product["location"],
@@ -35,18 +38,14 @@ def products():
         for product in products
     ]
 
-    if not result:
-        return jsonify([])
-    return jsonify([dict(row) for row in result])
-
-
+    return jsonify(result)
 
 @bp.route('/repos', methods=['GET'])
 def repositories():
     print("Found")
     search_query = request.args.get('search_query', '')
     db = get_db()
-    result = db.execute(
+    repos = db.execute(
         'SELECT r.name AS repository_name, '
         '       r.url AS repository_url, '
         '       p.name AS product_name, '
@@ -64,6 +63,23 @@ def repositories():
         'AND c.role = ?;',
         ('%' + search_query + '%', 'Scrum Master',)
     ).fetchall()
-    if not result:
+
+    if not repos:
         return jsonify([])
-    return jsonify([dict(row) for row in result])
+
+    result = [
+        {
+            "repo name": repo["repository_name"],
+            "repo url": repo["repository_url"],
+            "product name": repo["product_name"],
+            "first name": repo["first_name"],
+            "last name": repo["last_name"],
+            "email": repo["email"],
+            "chat username": repo["chat_username"],
+            "location": repo["location"],
+            "role": repo["role"]
+        }
+        for repo in repos
+    ]
+    
+    return jsonify(result)
