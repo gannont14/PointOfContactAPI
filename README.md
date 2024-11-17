@@ -134,7 +134,7 @@ Parameters:
     "location": "string",
     "role": "string"
   },
-  \cdots
+  "..."
 ]
 ```
 
@@ -166,5 +166,5 @@ Parameters:
         "product name": "Fundamental optimizing paradigm",
         "role": "Product Owner"
     },
-    \.\.\.
+    "..."
 ```
