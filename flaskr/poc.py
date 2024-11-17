@@ -120,3 +120,33 @@ def repositories():
     result = repo_heap.get_sorted_results()
 
     return jsonify(result)
+
+
+@bp.route('/products/all_contacts', methods=['GET'])
+def all_contacts():
+    print(f"full args: {request.args}")
+    product_name = request.args.get('product_name', '')
+    print(f"searching with product name: {product_name}")
+    db = get_db()
+    contacts = db.execute(
+        'WITH q AS ( SELECT p.name, p.product_id FROM products p WHERE p.name LIKE ? ), '
+        'w AS ( SELECT *  FROM contacts c  JOIN product_contacts pc ON c.contact_id = pc.contact_id)'
+        'SELECT *  FROM q  JOIN w ON q.product_id = w.product_id;',
+        ('%' + product_name + '%',)
+    ).fetchall()
+
+    result = [
+        {
+            "product name": contact["name"],
+            "first name": contact["first_name"],
+            "last name": contact["last_name"],
+            "email": contact["email"],
+            "chat username": contact["chat_username"],
+            "location": contact["location"],
+            "role": contact["role"]
+        }
+        for contact in contacts
+    ]
+    print(len(result))
+
+    return jsonify(result)
