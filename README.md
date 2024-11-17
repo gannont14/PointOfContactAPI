@@ -232,5 +232,5 @@ Performance optimizations include:
 - SQL query optimization  
 - Composite indexes for frequently joined columns
 
-These optimizations ensure responsive search performance even with large datasets and complex joins across multiple tables.
+These optimizations ensure responsive search performance even with large datasets.
 
