@@ -1,6 +1,6 @@
 # PointOfContactAPI
 
-- [PointOfContactAPI][#PointOfContactAPI]
+- [PointOfContactAPI](#PointOfContactAPI)
     - [Setup](#Setup)
     - [Documentation](#Documentation)
         - [Contact from Repository](#get-point-of-contact-from-repository-name)
