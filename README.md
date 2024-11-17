@@ -228,7 +228,7 @@ The application was optimized and tested with a substantial dataset:
 
 Performance optimizations include:
 - Custom SQL indexes for efficient querying
-- Levenshtein distance algorithm for fuzzy string matching
+- Levenshtein✨ distance algorithm for fuzzy string matching
 - SQL query optimization  
 - Composite indexes for frequently joined columns
 
