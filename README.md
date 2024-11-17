@@ -43,8 +43,7 @@ flask run
 ## Example Usage
 - Example proof of concept web app, using the API to allow the user to search for results based on product name or repository name, as well as autocompletion with fuzzy finding with Levenshtein distance algorithm
 
-<!--GIF-->
-
+![Example](./Assets/exampleGif.gif)
 ### How to use yourself
 
 While having the flask application running, create a new terminal instance,
@@ -54,6 +53,7 @@ Activate the virtual environment in the repository again,
 source ./venv/bin/activate
 ```
 
+Run the example web app
 ```python 
 streamlit run streamlit/main.py
 ```
