@@ -3,8 +3,9 @@
 - [PointOfContactAPI][#PointOfContactAPI]
     - [Setup](#Setup)
     - [Documentation](#Documentation)
-        - [Contact from Repository](#get-point-of-contact-from-a-repository-name)
-        - [Contact from Product](#get-point-of-contact-from-a-product-name)
+        - [Contact from Repository](#get-point-of-contact-from-repository-name)
+        - [Contact from Product](#get-point-of-contact-from-product-name)
+        - [Entire Team Contact](#get-entire-team-contact-information-from-product-name)
 
 
 
@@ -69,7 +70,7 @@ Parameters:
 ```
 
 
-### Get point of contact from a product name
+### Get point of contact from product name
 ```rs
 GET /api/products
 Parameters:
@@ -112,7 +113,7 @@ Parameters:
 ]
 ```
 
-#### Get entire team contact information from product name
+### Get entire team contact information from product name
 
 ```rs
 GET /api/products/all_contacts
