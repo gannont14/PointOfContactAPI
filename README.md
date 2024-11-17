@@ -131,7 +131,7 @@ Parameters:
     "role": "string"
   },
     {
-        ...
+        ..
     }
 ]
 ```
@@ -165,6 +165,6 @@ Parameters:
         "role": "Product Owner"
     },
     {
-        ...
+        ..
     }
 ```
