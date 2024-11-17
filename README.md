@@ -2,6 +2,8 @@
 
 - [PointOfContactAPI](#PointOfContactAPI)
     - [Setup](#Setup)
+        - [API](#API)
+        - [Example](#example-usage)
     - [Documentation](#Documentation)
         - [Contact from Repository](#get-point-of-contact-from-repository-name)
         - [Contact from Product](#get-point-of-contact-from-product-name)
@@ -12,12 +14,50 @@
 
 ## Setup
 
+## API
 Clone the code
 ```python
-git clone git@github.com:gannont14/PointOfContactAPI.git
+git clone https://github.com/gannont14/PointOfContactAPI.git
+```
+
+Create a virtual environment 
+```python
+python3 -m venv .venv
+```
+
+Activate the virtual environment 
+```python 
+source ./venv/bin/activate
 ```
 
 Install the requirements 
+```python
+pip install -r requirements.txt
+```
+
+Run the flask app
+```python
+flask run
+```
+
+## Example Usage
+- Example proof of concept web app, using the API to allow the user to search for results based on product name or repository name, as well as autocompletion with fuzzy finding with Levenshtein distance algorithm
+
+<!--GIF-->
+
+### How to use yourself
+
+While having the flask application running, create a new terminal instance,
+
+Activate the virtual environment in the repository again,
+```python 
+source ./venv/bin/activate
+```
+
+```python 
+streamlit run streamlit/main.py
+```
+
 
 
 ## Documentation
