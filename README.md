@@ -58,6 +58,11 @@ Run the example web app
 streamlit run streamlit/main.py
 ```
 
+If you want to add more data on top of the sample data, you can run the database population script
+```python 
+python3 flaskr/demo/populate_db.py
+```
+
 
 
 ## Documentation
