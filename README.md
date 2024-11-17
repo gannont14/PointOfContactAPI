@@ -3,7 +3,8 @@
 - [PointOfContactAPI][#PointOfContactAPI]
     - [Setup](#Setup)
     - [Documentation](#Documentation)
-        <!--- [Contact from Repository](#)-->
+        - [Contact from Repository](#get-point-of-contact-from-a-repository-name)
+        - [Contact from Product](#get-point-of-contact-from-a-product-name)
 
 
 
@@ -20,7 +21,7 @@ Install the requirements
 
 ## Documentation
 
-#### Get Point of Contact from repository name
+### Get Point of Contact from repository name
 ```rs
 GET /api/repos
 Parameters:
@@ -68,7 +69,7 @@ Parameters:
 ```
 
 
-#### Get point of contact from a product name
+### Get point of contact from a product name
 ```rs
 GET /api/products
 Parameters:
