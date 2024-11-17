@@ -76,20 +76,23 @@ def fetch_repo_data(repo_name):
 def render_product_item(item):
     """Render a product contact item."""
     with st.container(border=True):
-        st.markdown(
-            f"""
-            <h4 style="margin: 0; padding: 0;">{item['first name']} {item['last name']}</h4>
-            <small style="color: gray; font-size: 0.9em;">{item['role']}</small><br>
-            <p style="margin: 5px 0;">
-                <strong>Email:</strong> <a href="mailto:{item['email']}">{item['email']}</a><br>
-                <strong>Chat Username:</strong> {item['chat username']}<br>
-                <strong>Location:</strong> {item['location']}<br>
-                <strong>Product Name:</strong> {item['product name']}
-            </p>
-            """,
-            unsafe_allow_html=True
-        )
-
+        col1, col2 = st.columns([4.7,1])  # Changed from [4,1] to [2,1] to give more space to the button
+        with col2:
+            st.button(f"SHOW TEAM")
+        with col1:
+            st.markdown(
+                f"""
+                <h4 style="margin: 0; padding: 0;">{item['first name']} {item['last name']}</h4>
+                <small style="color: gray; font-size: 0.9em;">{item['role']}</small><br>
+                <p style="margin: 5px 0;">
+                    <strong>Email:</strong> <a href="mailto:{item['email']}">{item['email']}</a><br>
+                    <strong>Chat Username:</strong> {item['chat username']}<br>
+                    <strong>Location:</strong> {item['location']}<br>
+                    <strong>Product Name:</strong> {item['product name']}
+                </p>
+                """,
+                unsafe_allow_html=True
+            )
 def render_repo_item(item):
     """Render a repository contact item."""
     with st.container(border=True):
@@ -121,7 +124,7 @@ if search_type == "Product Name":
         placeholder="Search for a product...",
         default_options=[],
         clear_on_submit=False,
-        debounce=300,
+        debounce=100,
     )
     if selected_item:
         data = fetch_product_data(selected_item)
@@ -129,14 +132,14 @@ if search_type == "Product Name":
             st.subheader("Results")
             for item in data:
                 render_product_item(item)
-else:
+elif search_type == "Repository Name":
     selected_item = st_searchbox(
         search_autocomplete_repos,
         key="repo_searchbox",
         placeholder="Search for a repository...",
         default_options=[],
         clear_on_submit=False,
-        debounce=300,
+        debounce=100,
     )
     if selected_item:
         data = fetch_repo_data(selected_item)
