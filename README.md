@@ -134,7 +134,7 @@ Parameters:
     "location": "string",
     "role": "string"
   },
-  \.\.\.
+  \cdots
 ]
 ```
 
