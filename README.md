@@ -8,6 +8,7 @@
         - [Contact from Repository](#get-point-of-contact-from-repository-name)
         - [Contact from Product](#get-point-of-contact-from-product-name)
         - [Entire Team Contact](#get-entire-team-contact-information-from-product-name)
+    - [Optimization](#Optimization)
 
 
 
@@ -218,3 +219,18 @@ Parameters:
     },
     "..."
 ```
+## Optimization
+
+The application was optimized and tested with a substantial dataset:
+- 5,000 unique products
+- 6 team members per product
+- 30,000 total contacts in the database
+
+Performance optimizations include:
+- Custom SQL indexes for efficient querying
+- Levenshtein distance algorithm for fuzzy string matching
+- SQL query optimization  
+- Composite indexes for frequently joined columns
+
+These optimizations ensure responsive search performance even with large datasets and complex joins across multiple tables.
+
