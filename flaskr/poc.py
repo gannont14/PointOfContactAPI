@@ -2,39 +2,27 @@ from flask import (
     Blueprint, request, jsonify
 )
 import heapq
-from fuzzywuzzy import fuzz
+from thefuzz import fuzz
 from flaskr.db import get_db
 from typing import Dict, Any, List
 
+from flaskr.utils.fuzzy_search import FuzzyHeap
+
+
 bp = Blueprint('poc', __name__, url_prefix="/api")
-
-
-class fuzzyHeap:
-    def __init__(self):
-        self.heap = []
-        self.counter = 0
-
-    def push(self, item: Dict[str, Any], search_query, dictKey):
-        ratio = -fuzz.ratio(search_query.lower(), item[dictKey].lower())
-        self.counter += 1
-        heapq.heappush(self.heap, (ratio, self.counter, item))
-
-    def pop(self) -> Dict[str, Any]:
-        if self.heap:
-            val = heapq.heappop(self.heap)
-            # print(f"ratio: {val[0]}")
-            return val[2]
-        return None
-
-    def get_sorted_results(self) -> List[Dict[str, Any]]:
-        sorted_results = []
-        while self.heap:
-            sorted_results.append(self.pop())
-        return sorted_results
-
 
 @bp.route('/products', methods=['GET'])
 def products():
+    """
+    Get products and their scrum masters using fuzzy search.
+
+    Query Params:
+        search_query (str): Text to match against product names
+
+    Returns:
+        JSON array of matched products with contact details,
+        sorted by match quality
+    """
     search_query = request.args.get('search_query', '')
     db = get_db()
     products = db.execute(
@@ -47,7 +35,7 @@ def products():
     if not products:
         return jsonify([])
 
-    product_heap = fuzzyHeap()
+    product_heap = FuzzyHeap()
 
     for product in products:
         product_dict = {
@@ -71,7 +59,16 @@ def products():
 
 @bp.route('/repos', methods=['GET'])
 def repositories():
-    print("Found")
+    """
+    Get repositories and their scrum masters using fuzzy search.
+
+    Query Params:
+        search_query (str): Text to match against repository names
+
+    Returns:
+        JSON array of matched repositories with contact details,
+        sorted by match quality
+    """
     search_query = request.args.get('search_query', '')
     db = get_db()
     repos = db.execute(
@@ -96,7 +93,7 @@ def repositories():
     if not repos:
         return jsonify([])
 
-    repo_heap = fuzzyHeap()
+    repo_heap = FuzzyHeap()
 
     for repo in repos:
         repo_dict = {
@@ -111,7 +108,6 @@ def repositories():
             "role": repo["role"]}
 
         ratio = fuzz.ratio(search_query.lower(), repo_dict["repo name"].lower())
-        # print(f"Ratio: {ratio} for repo Name: {repo_dict['repo name']}")
 
         min_ratio = 0.5
         if ratio >= min_ratio:
@@ -124,9 +120,16 @@ def repositories():
 
 @bp.route('/products/all_contacts', methods=['GET'])
 def all_contacts():
-    print(f"full args: {request.args}")
+    """
+    Get all contacts associated with a product.
+
+    Query Params:
+        product_name (str): Name of product to find contacts for
+
+    Returns:
+        JSON array of all contacts associated with the matched product
+    """
     product_name = request.args.get('product_name', '')
-    print(f"searching with product name: {product_name}")
     db = get_db()
     contacts = db.execute(
         'WITH q AS ( SELECT p.name, p.product_id FROM products p WHERE p.name LIKE ? ), '
@@ -147,6 +150,5 @@ def all_contacts():
         }
         for contact in contacts
     ]
-    print(len(result))
 
     return jsonify(result)
