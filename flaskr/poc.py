@@ -1,5 +1,5 @@
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, url_for, jsonify
+    Blueprint, request, jsonify
 )
 from werkzeug.exceptions import abort
 
@@ -16,24 +16,11 @@ def products():
     search_query = request.args.get('search_query', '')
     db = get_db()
     products = db.execute(
-        'WITH q AS ('
-        'SELECT p.name, p.product_id '
-        'FROM products p '
-        'WHERE name LIKE ?'
-        '), w AS ('
-        'SELECT * '
-        'FROM contacts c '
-        'JOIN product_contacts pc ON c.contact_id = pc.contact_id'
-        ')'
-        'SELECT * '
-        'FROM q '
-        'JOIN w ON q.product_id = w.product_id '
-        'WHERE w.role = ?;',
+        'WITH q AS ( SELECT p.name, p.product_id FROM products p WHERE name LIKE ?), '
+        'w AS ( SELECT *  FROM contacts c  JOIN product_contacts pc ON c.contact_id = pc.contact_id)'
+        'SELECT *  FROM q  JOIN w ON q.product_id = w.product_id  WHERE w.role = ?;',
         ('%' + search_query + '%', 'Scrum Master',)
     ).fetchall()
-
-    if products is None:
-        abort(404, "products don't exists")
 
     result = [
         {
@@ -48,19 +35,35 @@ def products():
         for product in products
     ]
 
-    return jsonify(result)
+    if not result:
+        return jsonify([])
+    return jsonify([dict(row) for row in result])
+
 
 
 @bp.route('/repos', methods=['GET'])
-def repos():
+def repositories():
     print("Found")
+    search_query = request.args.get('search_query', '')
     db = get_db()
-    repos = db.execute(
-        'SELECT * FROM repositories;'
-    ).fetchone()
-
-    if repos is None:
-        print("No")
-        abort(404, "repositories don't exists")
-
-    return repos['name']
+    result = db.execute(
+        'SELECT r.name AS repository_name, '
+        '       r.url AS repository_url, '
+        '       p.name AS product_name, '
+        '       c.chat_username, '
+        '       c.email, '
+        '       c.first_name, '
+        '       c.last_name, '
+        '       c.location, '
+        '       c.role '
+        'FROM repositories r '
+        'JOIN products p ON r.product_id = p.product_id '
+        'JOIN product_contacts pc ON p.product_id = pc.product_id '
+        'JOIN contacts c ON pc.contact_id = c.contact_id '
+        'WHERE r.name LIKE ? '
+        'AND c.role = ?;',
+        ('%' + search_query + '%', 'Scrum Master',)
+    ).fetchall()
+    if not result:
+        return jsonify([])
+    return jsonify([dict(row) for row in result])
