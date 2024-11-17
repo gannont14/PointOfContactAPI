@@ -14,14 +14,16 @@ class fuzzyHeap:
         self.heap = []
         self.counter = 0
 
-    def push(self, item: Dict[str, Any], search_query):
-        ratio = -fuzz.ratio(search_query.lower(), item["repo name"].lower())
+    def push(self, item: Dict[str, Any], search_query, dictKey):
+        ratio = -fuzz.ratio(search_query.lower(), item[dictKey].lower())
         self.counter += 1
         heapq.heappush(self.heap, (ratio, self.counter, item))
 
     def pop(self) -> Dict[str, Any]:
         if self.heap:
-            return heapq.heappop(self.heap)[2]
+            val = heapq.heappop(self.heap)
+            # print(f"ratio: {val[0]}")
+            return val[2]
         return None
 
     def get_sorted_results(self) -> List[Dict[str, Any]]:
@@ -33,7 +35,6 @@ class fuzzyHeap:
 
 @bp.route('/products', methods=['GET'])
 def products():
-    print("Found")
     search_query = request.args.get('search_query', '')
     db = get_db()
     products = db.execute(
@@ -46,19 +47,25 @@ def products():
     if not products:
         return jsonify([])
 
-    result = [
-        {
+    product_heap = fuzzyHeap()
+
+    for product in products:
+        product_dict = {
             "product name": product["name"],
             "first name": product["first_name"],
             "last name": product["last_name"],
             "email": product["email"],
             "chat username": product["chat_username"],
             "location": product["location"],
-            "role": product["role"]
-        }
-        for product in products
-    ]
+            "role": product["role"]}
 
+        ratio = fuzz.ratio(search_query.lower(), product_dict["product name"].lower())
+
+        min_ratio = 0.5
+        if ratio >= min_ratio:
+            product_heap.push(product_dict, search_query, "product name")
+
+    result = product_heap.get_sorted_results()
     return jsonify(result)
 
 
@@ -104,11 +111,11 @@ def repositories():
             "role": repo["role"]}
 
         ratio = fuzz.ratio(search_query.lower(), repo_dict["repo name"].lower())
-        print(f"Ratio: {ratio} for repo Name: {repo_dict['repo name']}")
+        # print(f"Ratio: {ratio} for repo Name: {repo_dict['repo name']}")
 
         min_ratio = 0.5
         if ratio >= min_ratio:
-            repo_heap.push(repo_dict, search_query)
+            repo_heap.push(repo_dict, search_query, "repo name")
 
     result = repo_heap.get_sorted_results()
 
