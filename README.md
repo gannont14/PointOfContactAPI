@@ -15,7 +15,7 @@
 # Setup
 
 ## API
-Clone the code
+Clone the repository
 ```python
 git clone https://github.com/gannont14/PointOfContactAPI.git
 ```
@@ -44,7 +44,7 @@ flask run
 - Example proof of concept web app, using the API to allow the user to search for results based on product name or repository name, as well as autocompletion with fuzzy finding with Levenshtein distance algorithm
 
 ![Example](./assets/exampleGif.gif)
-### How to use yourself
+### How To Use It Yourself
 
 While having the flask application running, create a new terminal instance,
 
@@ -67,7 +67,7 @@ python3 flaskr/demo/populate_db.py
 
 ## Documentation
 
-## Get Point of Contact from repository name
+### Get Point of Contact From Repository Name
 ```rs
 GET /api/repos
 Parameters:
@@ -115,7 +115,7 @@ Parameters:
 ```
 
 
-## Get point of contact from product name
+### Get Point of Contact From Product Name
 ```rs
 GET /api/products
 Parameters:
@@ -158,7 +158,7 @@ Parameters:
 ]
 ```
 
-## Get entire team contact information from product name
+### Get Entire Team Contact Information From Product Name
 
 ```rs
 GET /api/products/all_contacts
