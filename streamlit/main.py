@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 from streamlit_searchbox import st_searchbox
 
-FLASK_BASE_URL = 'http://127.0.0.1:5000/'
+FLASK_BASE_URL = 'http://127.0.0.1:5000/api/'  
 
 st.set_page_config(
     page_title="Point of Contact",
@@ -23,11 +23,13 @@ def search_autocomplete_products(search_query):
     """Search products from the API."""
     if not search_query:
         return []
-    url = f"{FLASK_BASE_URL}contact/search/products"
+    url = f"{FLASK_BASE_URL}products"
     try:
         response = requests.get(url, params={'search_query': search_query})
         if response.status_code == 200:
-            return response.json()
+            data = response.json()
+            product_names = list(set(item['product name'] for item in data))
+            return product_names
     except requests.exceptions.RequestException:
         st.error("Failed to connect to the search API")
     return []
@@ -36,24 +38,28 @@ def search_autocomplete_repos(search_query):
     """Search repositories from the API."""
     if not search_query:
         return []
-    url = f"{FLASK_BASE_URL}contact/search/repos"
+    url = f"{FLASK_BASE_URL}repos"
     try:
         response = requests.get(url, params={'search_query': search_query})
         if response.status_code == 200:
-            return response.json()
+            data = response.json()
+            product_names = list(set(item['repo name'] for item in data))
+            return product_names
     except requests.exceptions.RequestException:
         st.error("Failed to connect to the search API")
     return []
 
 def fetch_product_data(product_name):
     """Fetch contact data for a specific product."""
-    url = f"{FLASK_BASE_URL}contact/products"
+    if not product_name:
+        return None
+    url = f"{FLASK_BASE_URL}products" 
     try:
         response = requests.get(url, params={'search_query': product_name})
         if response.status_code == 200:
             data = response.json()
             if data:
-                return data
+                return data   
             st.write("No contacts found for this product")
     except requests.exceptions.RequestException as e:
         st.write(f"An error occurred: {e}")
@@ -61,7 +67,7 @@ def fetch_product_data(product_name):
 
 def fetch_repo_data(repo_name):
     """Fetch contact data for a specific repository."""
-    url = f"{FLASK_BASE_URL}contact/repos"
+    url = f"{FLASK_BASE_URL}repos"
     try:
         response = requests.get(url, params={'search_query': repo_name})
         if response.status_code == 200:
@@ -125,6 +131,7 @@ if search_type == "Product Name":
         default_options=[],
         clear_on_submit=False,
         debounce=100,
+        
     )
     if selected_item:
         data = fetch_product_data(selected_item)
