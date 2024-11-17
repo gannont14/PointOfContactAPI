@@ -1,7 +1,9 @@
 # PointOfContactAPI
 
 - [PointOfContactAPI][#PointOfContactAPI]
-    - [Setup][#Setup]
+    - [Setup](#Setup)
+    - [Documentation](#Documentation)
+        <!--- [Contact from Repository](#)-->
 
 
 
@@ -131,7 +133,7 @@ Parameters:
     "role": "string"
   },
     {
-        ..
+        ...
     }
 ]
 ```
@@ -165,6 +167,6 @@ Parameters:
         "role": "Product Owner"
     },
     {
-        ..
+        ...
     }
 ```
