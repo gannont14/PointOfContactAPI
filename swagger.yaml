@@ -1,0 +1,167 @@
+openapi: 3.0.0
+info:
+  title: Contact API
+  description: API for managing product contacts and repository information
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/TUBBSGANNON14_1/PointOfContact/1.0.0
+  description: SwaggerHub API Auto Mocking
+- url: http://127.0.0.1:5000/contact
+  description: Local development server
+- url: http://localhost:5000/contact
+  description: Alternative local development server
+paths:
+  /products:
+    get:
+      summary: Get products with Scrum Master contacts
+      description: Retrieves products and their associated Scrum Master contacts based on a search query
+      parameters:
+      - name: search_query
+        in: query
+        description: Search term for product name
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductContact'
+        "404":
+          description: No products found
+          content:
+            application/json:
+              schema:
+                type: array
+                items: {}
+  /repos:
+    get:
+      summary: Get repositories with Scrum Master contacts
+      description: Retrieves repositories and their associated Scrum Master contacts based on a search query
+      parameters:
+      - name: search_query
+        in: query
+        description: Search term for repository name
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RepositoryContact'
+        "404":
+          description: No repositories found
+          content:
+            application/json:
+              schema:
+                type: array
+                items: {}
+  /products/all_contacts:
+    get:
+      summary: Get all contacts for a product
+      description: Retrieves all contacts associated with a specific product
+      parameters:
+      - name: product_name
+        in: query
+        description: Name of the product to search for
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductContact'
+components:
+  schemas:
+    ProductContact:
+      required:
+      - chat username
+      - email
+      - first name
+      - last name
+      - location
+      - product name
+      - role
+      type: object
+      properties:
+        product name:
+          type: string
+          description: Name of the product
+        first name:
+          type: string
+          description: First name of the contact
+        last name:
+          type: string
+          description: Last name of the contact
+        email:
+          type: string
+          description: Email address of the contact
+        chat username:
+          type: string
+          description: Chat username of the contact
+        location:
+          type: string
+          description: Location of the contact
+        role:
+          type: string
+          description: Role of the contact
+    RepositoryContact:
+      required:
+      - chat username
+      - email
+      - first name
+      - last name
+      - location
+      - product name
+      - repo name
+      - repo url
+      - role
+      type: object
+      properties:
+        repo name:
+          type: string
+          description: Name of the repository
+        repo url:
+          type: string
+          description: URL of the repository
+        product name:
+          type: string
+          description: Name of the associated product
+        first name:
+          type: string
+          description: First name of the contact
+        last name:
+          type: string
+          description: Last name of the contact
+        email:
+          type: string
+          description: Email address of the contact
+        chat username:
+          type: string
+          description: Chat username of the contact
+        location:
+          type: string
+          description: Location of the contact
+        role:
+          type: string
+          description: Role of the contact
