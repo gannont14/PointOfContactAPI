@@ -18,7 +18,7 @@ Install the requirements
 
 ## Documentation
 
--   Get point of contact from a repository name for the scrum master
+#### Get Point of Contact from repository name
 ```rs
 GET /api/repos
 Parameters:
@@ -46,7 +46,7 @@ Parameters:
 ```rs
 GET /api/repos
 Parameters:
-    search_query=Enterprise-wide-empowering-circuit-repo
+    search_query=enterprise-wide-empowering-circuit-repo
 ```
 
 ```json
@@ -66,7 +66,7 @@ Parameters:
 ```
 
 
--   Get point of contact from a product name for the scrum master
+#### Get point of contact from a product name
 ```rs
 GET /api/products
 Parameters:
@@ -92,7 +92,7 @@ Parameters:
 ```rs
 GET /api/products
 Parameters:
-    search_query=Managed systematic Intranet
+    search_query=managed systematic intranet
 ```
 
 ```json
@@ -109,5 +109,62 @@ Parameters:
 ]
 ```
 
+#### Get entire team contact information from product name
 
+```rs
+GET /api/products/all_contacts
+Parameters:
+    product_name=product_name
+```
 
+-   Returns a list of all contacts associated with a project, and their roles
+
+```json
+[
+  {
+    "product name": "string",
+    "first name": "string",
+    "last name": "string",
+    "email": "string",
+    "chat username": "string",
+    "location": "string",
+    "role": "string"
+  },
+    {
+        ...
+    }
+]
+```
+
+-  Example using a search query of "fundamental optimizing paradigm" 
+
+```rs
+GET /api/products/all_contacts
+Parameters:
+    product_name=fundamental optimizing paradigm
+```
+
+```json
+[
+    {
+        "product name": "Fundamental optimizing paradigm",
+        "first name": "Gregory",
+        "last name": "Barton",
+        "email": "gregory.barton@sc1701d.com",
+        "chat username": "@gregorybarton",
+        "location": "Berlin, DE",
+        "role": "Scrum Master"
+    },
+    {
+        "chat username": "@michaelbaker",
+        "email": "michael.baker@sc1701d.com",
+        "first name": "Michael",
+        "last name": "Baker",
+        "location": "Berlin, DE",
+        "product name": "Fundamental optimizing paradigm",
+        "role": "Product Owner"
+    },
+    {
+        ...
+    }
+```
