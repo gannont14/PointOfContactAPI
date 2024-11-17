@@ -34,8 +34,21 @@ def products():
 
     if products is None:
         abort(404, "products don't exists")
-    product_names = [product['email'] for product in products]
-    return jsonify(product_names)
+
+    result = [
+        {
+            "product name": product["name"],
+            "first_name": product["first_name"],
+            "last_name": product["last_name"],
+            "email": product["email"],
+            "chat username": product["chat_username"],
+            "location": product["location"],
+            "role": product["role"]
+        }
+        for product in products
+    ]
+
+    return jsonify(result)
 
 
 @bp.route('/repos', methods=['GET'])
